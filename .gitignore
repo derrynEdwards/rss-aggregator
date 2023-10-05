@@ -1,1 +1,5 @@
 .idea/
+.env
+rss-aggregator
+sqlc.yaml
+sql/queries/
