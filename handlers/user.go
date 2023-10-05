@@ -15,13 +15,23 @@ type ApiConfig struct {
 	DB *database.Queries
 }
 
-func (cfg *ApiConfig) HandlerUsersCreate(w http.ResponseWriter, r *http.Request) {
-	type parameters struct {
-		Name string
-	}
+type UserCreateParams struct {
+	Name string `json:"name" example:"John"`
+} //@name UserCreateParams
 
+// HandlerUsersCreate godoc
+// @Summary Creates a user
+// @Description Creates a new user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body UserCreateParams true "user name"
+// @Success 200 {object} utils.User
+// @Failure 500
+// @Router /users [post]
+func (cfg *ApiConfig) HandlerUsersCreate(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
-	params := parameters{}
+	params := UserCreateParams{}
 	err := decoder.Decode(&params)
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, "Couldn't decode Parameters")
@@ -43,6 +53,15 @@ func (cfg *ApiConfig) HandlerUsersCreate(w http.ResponseWriter, r *http.Request)
 	utils.RespondWithJSON(w, http.StatusOK, utils.DatabaseUserToUser(user))
 }
 
+// HandlerUsersGet godoc
+// @Summary Gets current user information
+// @Description Gets current user information
+// @Tags users
+// @Produce json
+// @Success 200 {object} utils.User
+// @Failure 500
+// @Router /users [get]
+// @Security ApiKeyAuth
 func (cfg *ApiConfig) HandlerUsersGet(w http.ResponseWriter, r *http.Request, user database.User) {
 	utils.RespondWithJSON(w, http.StatusOK, utils.DatabaseUserToUser(user))
 }

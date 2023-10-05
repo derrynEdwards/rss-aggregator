@@ -6,13 +6,24 @@ import (
 	"net/http"
 	"os"
 
+	_ "github.com/derrynEdwards/rss-aggregator/docs"
 	"github.com/derrynEdwards/rss-aggregator/handlers"
 	"github.com/derrynEdwards/rss-aggregator/internal/database"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/httplog"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/swaggo/http-swagger"
 )
+
+// @title RSS-Aggregator
+// @version 1.0.0
+// @description Boot.dev Guided Project
+// @host localhost:8080
+// @BasePath /v1
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in header
+// @name Authorization
 
 func main() {
 	godotenv.Load(".env")
@@ -45,6 +56,10 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(httplog.RequestLogger(logger))
 	apiRouter := chi.NewRouter()
+
+	apiRouter.Get("/swagger/*", httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:8080/v1/swagger/doc.json"),
+	))
 
 	apiRouter.Get("/readiness", handlers.HandlerReadiness)
 	apiRouter.Get("/err", handlers.HandlerErr)

@@ -1,0 +1,245 @@
+basePath: /v1
+definitions:
+  Feed:
+    properties:
+      created_at:
+        example: "2023-10-05T00:49:11.897425Z"
+        type: string
+      id:
+        example: 4bda8766-37a2-46e7-ad95-1c4038b3bcfe
+        type: string
+      name:
+        example: The Example Blog
+        type: string
+      update_at:
+        example: "2023-10-05T00:49:11.897425Z"
+        type: string
+      url:
+        example: https://example.blog
+        type: string
+      user_id:
+        example: 03f474bc-2651-4a2f-ab3e-9525d1ee40bf
+        type: string
+    type: object
+  FeedAndFeedFollows:
+    properties:
+      feed:
+        $ref: '#/definitions/Feed'
+      feed_follow:
+        $ref: '#/definitions/FeedFollow'
+    type: object
+  FeedCreateParams:
+    properties:
+      name:
+        example: The Example Blog
+        type: string
+      url:
+        example: https://example.blog
+        type: string
+    type: object
+  FeedFollow:
+    properties:
+      created_at:
+        example: "2023-10-05T03:57:38.673971Z"
+        type: string
+      feed_id:
+        example: 4bda8766-37a2-46e7-ad95-1c4038b3bcfe
+        type: string
+      id:
+        example: 1323e287-5e9d-4999-8373-35293f38c9d8
+        type: string
+      updated_at:
+        example: "2023-10-05T03:57:38.673971Z"
+        type: string
+      user_id:
+        example: 03f474bc-2651-4a2f-ab3e-9525d1ee40bf
+        type: string
+    type: object
+  FeedFollowCreateParams:
+    properties:
+      feed_id:
+        example: 26296df9-59ce-4fbe-8c7d-f3397fcb91ce
+        type: string
+    type: object
+  User:
+    properties:
+      api_key:
+        example: 333a7712b7edb73922f9e5c0421fe224443247aa80da93b0409377281b38207c
+        type: string
+      created_at:
+        example: "2023-10-05T00:47:49.007148Z"
+        type: string
+      id:
+        example: 03f474bc-2651-4a2f-ab3e-9525d1ee40bf
+        type: string
+      name:
+        example: John
+        type: string
+      update_at:
+        example: "2023-10-05T00:47:49.007148Z"
+        type: string
+    type: object
+  UserCreateParams:
+    properties:
+      name:
+        example: John
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Boot.dev Guided Project
+  title: RSS-Aggregator
+  version: 1.0.0
+paths:
+  /feed_follows:
+    get:
+      description: Get all FeedFollows for authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/FeedFollow'
+            type: array
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Gets all FeedFollows for authenticated user
+      tags:
+      - feed_follows
+    post:
+      consumes:
+      - application/json
+      description: Creates a new FeedFollow for authenticated user
+      parameters:
+      - description: feed id
+        in: body
+        name: feedfollow
+        required: true
+        schema:
+          $ref: '#/definitions/FeedFollowCreateParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/FeedFollow'
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Creates a FeedFollow for authenticated user
+      tags:
+      - feed_follows
+  /feed_follows/{feedFollowID}:
+    delete:
+      description: Deletes specific FeedFollow for authenticated user
+      parameters:
+      - description: feed uuid
+        in: path
+        name: feedFollowID
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes specific FeedFollow for authenticated user
+      tags:
+      - feed_follows
+  /feeds:
+    get:
+      description: Get all feeds
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Feed'
+            type: array
+        "500":
+          description: Internal Server Error
+      summary: Gets all feeds
+      tags:
+      - feeds
+    post:
+      consumes:
+      - application/json
+      description: Creates a new feed
+      parameters:
+      - description: feed name and url
+        in: body
+        name: feed
+        required: true
+        schema:
+          $ref: '#/definitions/FeedCreateParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/FeedAndFeedFollows'
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Creates a feed
+      tags:
+      - feeds
+  /users:
+    get:
+      description: Gets current user information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        "500":
+          description: Internal Server Error
+      security:
+      - ApiKeyAuth: []
+      summary: Gets current user information
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user
+      parameters:
+      - description: user name
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/UserCreateParams'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/User'
+        "500":
+          description: Internal Server Error
+      summary: Creates a user
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
