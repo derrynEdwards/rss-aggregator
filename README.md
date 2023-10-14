@@ -1,7 +1,6 @@
 # RSS Aggregator
 
-Overview
---------
+## Overview
 Go guided project from [Boot.dev](https://boot.dev)
 
 We're going to build an RSS feed aggregator in Go. This web server will allos clients to:
@@ -9,20 +8,17 @@ We're going to build an RSS feed aggregator in Go. This web server will allos cl
 - Follow and unfollow RSS feeds that other users have added
 - Fetch all of the latest posts from the RSS feeds they follow
 
-Learning Goals
---------------
+## Learning Goals
 - Learn how to integrate a Go server with PostgreSQL
 - Learn about the basics of database migrations
 - Learn about long-running service workers
 
-Requirements
-------------
+## Requirements
 - Go 1.21.1
 - Goose `go install github.com/pressly/goose/v3/cmd/goose@latest`
 - PostgreSQL 15
 
-Setup
------
+## Setup
 - Have a PostgreSQL Database Up and Running
 - Change directory to `sql/schema`
 - Run Goose DB Migration to setup tables
@@ -30,16 +26,13 @@ Setup
 - Install dependencies `go mod download`
 - Build `go build`
 
-Execution
----------
+## Execution
 - Run the Built Executable `./rss-aggregator`
 
-API Docs
---------
+## API Docs
 
 
-File Tree
----------
+## File Tree
 ```shell
 rss-aggregator
 ├── README.md
@@ -76,8 +69,7 @@ rss-aggregator
         └── 004_follows.sql
 ```
 
-Sample Run
-----------
+## Sample Run
 ```shell
 ❯ ./rss-aggregator
 2023/10/04 22:41:19 Serving on :8080
