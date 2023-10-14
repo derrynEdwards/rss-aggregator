@@ -1,5 +1,4 @@
-RSS Aggregator
-==============
+# RSS Aggregator
 
 Overview
 --------
