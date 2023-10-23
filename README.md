@@ -76,4 +76,5 @@ rss-aggregator
 
 ```
 
-## Contibuting
+## Contributing  
+
